@@ -6,8 +6,6 @@ import { AnimatePresence, motion } from "framer-motion";
 
 interface Photo {
   id: number;
-  x: number;
-  y: number;
   width: number;
   height: number;
   src: string;
@@ -15,7 +13,12 @@ interface Photo {
   desc: string;
 }
 
-const photos = [
+interface PositionedPhoto extends Photo {
+  x: number;
+  y: number;
+}
+
+const photos: Photo[] = [
   {
     id: 1,
     src: "/guitar_fish.jpg",
@@ -35,19 +38,57 @@ const photos = [
 ];
 
 export default function Page() {
-  const [hoveredPhoto, setHoveredPhoto] = useState<Photo | null>(null);
+  const [hoveredPhoto, setHoveredPhoto] = useState<PositionedPhoto | null>(
+    null,
+  );
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
+  const [randomizedPhotos, setRandomizedPhotos] = useState<PositionedPhoto[]>(
+    [],
+  );
+  const containerRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
-  const [randomizedPhotos, setRandomizedPhotos] = useState<Photo[]>([]);
+
+  const isOverlapping = (
+    photo: PositionedPhoto,
+    others: PositionedPhoto[],
+    threshold = 300,
+  ) => {
+    return others.some((other) => {
+      const dx = photo.x - other.x;
+      const dy = photo.y - other.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      return distance < threshold;
+    });
+  };
 
   useEffect(() => {
-    // Initialize photos with random x and y positions
-    const initializedPhotos = photos.map((photo) => ({
-      ...photo,
-      x: Math.random() * 80, // Ensure they don't overlap edges
-      y: Math.random() * 80, // Ensure they don't overlap edges
-    }));
-    setRandomizedPhotos(initializedPhotos);
+    const initializePhotos = () => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const containerWidth = container.offsetWidth;
+      const containerHeight = container.offsetHeight;
+      const placedPhotos: PositionedPhoto[] = [];
+
+      const photosWithPositions: PositionedPhoto[] = photos.map((photo) => {
+        const newPhoto: PositionedPhoto = { ...photo, x: 0, y: 0 };
+
+        do {
+          newPhoto.x = Math.random() * (containerWidth - photo.width);
+          newPhoto.y = Math.random() * (containerHeight - photo.height);
+        } while (isOverlapping(newPhoto, placedPhotos));
+
+        placedPhotos.push(newPhoto);
+        return newPhoto;
+      });
+
+      setRandomizedPhotos(photosWithPositions);
+    };
+
+    initializePhotos();
   }, []);
 
   useEffect(() => {
@@ -67,18 +108,55 @@ export default function Page() {
     };
   }, []);
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setDragging(true);
+  };
+
+  useEffect(() => {
+    if (!dragging) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      setOffset((prev) => ({
+        x: prev.x + e.movementX,
+        y: prev.y + e.movementY,
+      }));
+    };
+
+    const stopDragging = () => setDragging(false);
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", stopDragging);
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", stopDragging);
+    };
+  }, [dragging]);
+
   return (
-    <div className="mt-6 flex min-w-0 flex-auto flex-col md:mt-0">
-      <div ref={galleryRef} className="relative h-[600px] w-full">
+    <div
+      className="relative mx-auto h-[600px] w-[800px] overflow-hidden border border-gray-600"
+      ref={galleryRef}
+    >
+      <div
+        ref={containerRef}
+        className="absolute h-full w-full"
+        style={{
+          transform: `translate(${offset.x}px, ${offset.y}px)`,
+          cursor: dragging ? "grabbing" : "grab",
+        }}
+        onMouseDown={handleMouseDown}
+      >
         {randomizedPhotos.map((photo) => (
           <motion.div
             key={photo.id}
             className="absolute"
             style={{
-              left: `${photo.x}%`,
-              top: `${photo.y}%`,
-              width: photo.width,
-              height: photo.height,
+              left: `${photo.x}px`,
+              top: `${photo.y}px`,
+              width: `${photo.width}px`,
+              height: `${photo.height}px`,
             }}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -92,37 +170,35 @@ export default function Page() {
               <Image
                 src={photo.src}
                 alt={photo.title}
-                layout="fill"
-                objectFit="cover"
+                fill
+                style={{ objectFit: "cover" }}
                 className="rounded-lg"
               />
               <div className="absolute inset-0 rounded-lg border-2 border-white shadow-[0_0_15px_rgba(255,255,255,0.5)] transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(255,255,255,0.8)]" />
             </div>
           </motion.div>
         ))}
-
-        <AnimatePresence>
-          {hoveredPhoto && (
-            <motion.div
-              className="pointer-events-none absolute z-10 rounded-lg bg-black/80 p-4 text-white shadow-lg"
-              style={{
-                left: mousePosition.x + 20,
-                top: mousePosition.y - 60,
-                maxWidth: "200px",
-              }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{ duration: 0.2 }}
-            >
-              <h3 className="mb-2 text-lg font-semibold">
-                {hoveredPhoto.title}
-              </h3>
-              <p className="text-sm">{hoveredPhoto.desc}</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
+
+      <AnimatePresence>
+        {hoveredPhoto && (
+          <motion.div
+            className="pointer-events-none absolute z-10 rounded-lg bg-black/80 p-4 text-white shadow-lg"
+            style={{
+              left: mousePosition.x + 20,
+              top: mousePosition.y - 60,
+              maxWidth: "200px",
+            }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <h3 className="mb-2 text-lg font-semibold">{hoveredPhoto.title}</h3>
+            <p className="text-sm">{hoveredPhoto.desc}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
