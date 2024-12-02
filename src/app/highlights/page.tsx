@@ -35,6 +35,14 @@ const photos: Photo[] = [
     width: 16 * 25,
     height: 9 * 25,
   },
+  {
+    id: 3,
+    src: "/calico.jpg",
+    title: "Calico Bass ?",
+    desc: "says hi",
+    width: 16 * 25,
+    height: 9 * 25,
+  },
 ];
 
 export default function Page() {
@@ -187,7 +195,7 @@ export default function Page() {
             style={{
               left: mousePosition.x + 20,
               top: mousePosition.y - 60,
-              maxWidth: "200px",
+              maxWidth: "350px",
             }}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
