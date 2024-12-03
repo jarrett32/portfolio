@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { TrainFrontTunnel } from "lucide-react";
 import { motion } from "framer-motion";
 import { type RefObject, useRef } from "react";
 import { addAreaParticles } from "./AnimatedBackground";
 
 export function Sidebar() {
+  const pathname = usePathname();
   const aboutRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
   const highlightsRef = useRef<HTMLDivElement>(null);
@@ -46,7 +48,11 @@ export function Sidebar() {
             >
               <Link
                 href="/"
-                className="text-primary-600 dark:text-secondary-400"
+                className={`${
+                  pathname === "/"
+                    ? "text-highlight"
+                    : "transition-opacity hover:opacity-60 dark:text-gray-400"
+                }`}
               >
                 About
               </Link>
@@ -60,7 +66,11 @@ export function Sidebar() {
             >
               <Link
                 href="/projects"
-                className="transition-opacity hover:opacity-60 dark:text-gray-400"
+                className={`${
+                  pathname === "/projects"
+                    ? "text-highlight"
+                    : "transition-opacity hover:opacity-60 dark:text-gray-400"
+                }`}
               >
                 Projects
               </Link>
@@ -74,7 +84,11 @@ export function Sidebar() {
             >
               <Link
                 href="/highlights"
-                className="transition-opacity hover:opacity-60 dark:text-gray-400"
+                className={`${
+                  pathname === "/highlights"
+                    ? "text-highlight"
+                    : "transition-opacity hover:opacity-60 dark:text-gray-400"
+                }`}
               >
                 Highlights
               </Link>
