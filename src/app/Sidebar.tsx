@@ -10,7 +10,7 @@ import { addAreaParticles } from "./AnimatedBackground";
 export function Sidebar() {
   const pathname = usePathname();
   const aboutRef = useRef<HTMLDivElement>(null);
-  const projectsRef = useRef<HTMLDivElement>(null);
+  const writingRef = useRef<HTMLDivElement>(null);
   const highlightsRef = useRef<HTMLDivElement>(null);
 
   const handleAddParticles = (
@@ -62,17 +62,17 @@ export function Sidebar() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleAddParticles(highlightsRef, 10)}
-              ref={projectsRef}
+              ref={writingRef}
             >
               <Link
-                href="/projects"
+                href="/writing"
                 className={`${
-                  pathname === "/projects"
+                  pathname === "/posts"
                     ? "text-highlight"
                     : "transition-opacity hover:opacity-60 dark:text-gray-400"
                 }`}
               >
-                Projects
+                Writing
               </Link>
             </motion.div>
             <motion.div
