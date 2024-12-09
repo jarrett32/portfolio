@@ -19,6 +19,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="MtAyVRQTEK_fUKxCzonYRLNclF8eKY7W4BDyb7rK35Y"
+        />
+      </head>
       <body
         className={`${inter.className} min-h-screen text-gray-800 antialiased dark:text-white`}
       >
