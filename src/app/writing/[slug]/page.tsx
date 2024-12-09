@@ -14,16 +14,15 @@ export async function generateStaticParams() {
   const filenames = fs.readdirSync(postsDirectory);
 
   return filenames.map((filename) => ({
-    slug: filename.replace(/\.md$/, ""),
+    slug: filename.replace(/\.mdx$/, ""),
   }));
 }
 
-export default async function BlogPost({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const post = getPostBySlug(params.slug);
+type PostProps = Promise<{ slug: string }>;
+
+export default async function BlogPost(props: { params: PostProps }) {
+  const { slug } = await props.params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     notFound();
