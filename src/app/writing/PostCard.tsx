@@ -18,7 +18,7 @@ export default function PostCard({ post }: PostCardProps) {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/blog/${post.slug}`);
+    router.push(`/writing/${post.slug}`);
   };
 
   return (

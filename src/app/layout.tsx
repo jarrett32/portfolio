@@ -3,7 +3,6 @@ import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
-import { AnimatedBackground } from "./AnimatedBackground";
 import { ThemeProvider } from "./ThemeProvider";
 import { Sidebar } from "./Sidebar";
 
@@ -29,7 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AnimatedBackground />
+          {/* <AnimatedBackground /> */}
           <div className="relative z-10 mx-4 mb-40 mt-8 flex max-w-5xl flex-col md:mt-20 md:flex-row lg:mx-auto lg:mt-32">
             <Sidebar />
             {children}
