@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Link } from "lucide-react";
 import Image from "next/image";
 import { type Post } from "lib/posts";
 
@@ -16,10 +15,10 @@ export function TableOfContents({ content }: { content: string }) {
   const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
-    const headings = content.match(/^#{2} .+$/gm) || [];
+    const headings = content.match(/^#{1,3} .+$/gm) ?? [];
     const tocItems = headings.map((heading) => {
-      const level = heading.split(" ")[0]?.length;
-      const text = heading.replace(/^#{2} /, "");
+      const level = heading.split(" ")[0]?.length ?? 0; // Provide a default value of 0
+      const text = heading.replace(/^#{1,3} /, "");
       const id = text.toLowerCase().replace(/[^\w]+/g, "-");
       return { id, text, level };
     });
@@ -60,7 +59,7 @@ export function TableOfContents({ content }: { content: string }) {
           >
             <a
               href={`#${item.id}`}
-              className={`block rounded px-2 py-1 text-gray-600 transition-colors duration-200 ease-in-out hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 ${activeId === item.id ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200" : ""} `}
+              className={`block rounded px-2 py-1 text-white transition-colors duration-200 ease-in-out hover:text-gray-900 dark:text-white dark:hover:text-gray-100 ${activeId === item.id ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200" : ""} `}
             >
               <div className="flex items-center">
                 <span className="truncate">
