@@ -45,8 +45,10 @@ export function TableOfContents({ content }: { content: string }) {
     return () => observer.disconnect();
   }, [toc]);
 
+  if (!toc || toc.length === 0) return null;
+
   return (
-    <nav className="sticky top-8 max-h-[calc(100vh-4rem)] overflow-auto pr-4">
+    <nav className="top-8 hidden max-h-[calc(100vh-4rem)] overflow-auto pr-4 lg:sticky lg:block">
       <h2 className="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200">
         Table of Contents
       </h2>

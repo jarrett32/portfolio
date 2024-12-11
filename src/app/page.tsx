@@ -29,6 +29,10 @@ export default function Page() {
                 to do with the ocean. Checkout out my Gallery for some action
                 shots!
               </p>
+              <p>
+                Looking for friends to do advent of code 2024{" "}
+                <Link href="/writing/advent-of-code-2024">here</Link>
+              </p>
             </motion.div>
             {/* <motion.div
               className="mt-12"
@@ -53,6 +57,7 @@ export default function Page() {
           <Link
             href="mailto:jarrettthompson32@gmail.com"
             className="text-sm text-gray-500 transition hover:text-gray-600"
+            target="_blank"
           >
             <span className="sr-only">Email</span>
             <svg
@@ -67,6 +72,7 @@ export default function Page() {
           <Link
             href="https://github.com/jarrett32"
             className="text-sm text-gray-500 transition hover:text-gray-600"
+            target="_blank"
           >
             <span className="sr-only">GitHub</span>
             <svg
@@ -81,8 +87,9 @@ export default function Page() {
             </svg>
           </Link>
           <Link
-            href="https://github.com/jarrett32"
+            href="https://www.linkedin.com/in/jarrett-thompson17/"
             className="text-sm text-gray-500 transition hover:text-gray-600"
+            target="_blank"
           >
             <span className="sr-only">LinkedIn</span>
             <svg

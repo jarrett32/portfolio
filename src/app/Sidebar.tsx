@@ -30,9 +30,9 @@ export function Sidebar() {
   // };
 
   return (
-    <aside className="relative -mx-4 md:mx-0 md:w-[200px] md:flex-shrink-0 md:px-0">
+    <aside className="relative -mx-4 p-8 md:mx-0 md:w-[200px] md:flex-shrink-0 md:px-0 lg:p-0">
       <div className="lg:sticky lg:top-20">
-        <div className="mb-2 flex flex-col items-start space-y-10 px-4 md:mb-20 md:flex-row md:px-0">
+        <div className="mb-2 hidden flex-col items-start space-y-10 px-4 md:mb-20 md:flex-row md:px-0 lg:flex">
           <Link href="/" className="fill-primary-600 dark:fill-secondary-500">
             <TrainFrontTunnel className="h-9 w-9" />
           </Link>
@@ -75,8 +75,9 @@ export function Sidebar() {
                 Writing
               </Link>
             </motion.div>
+            {/* TODO: Make this section mobile friendly */}
             <motion.div
-              className="flex flex-col-reverse items-center py-1 text-sm md:flex-row"
+              className="hidden flex-col-reverse items-center py-1 text-sm md:flex-row"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               // onClick={() => handleAddParticles(highlightsRef, 10)}
