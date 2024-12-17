@@ -1,9 +1,9 @@
 "use client";
 
+import { motion } from "framer-motion";
+import { TrainFrontTunnel } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { TrainFrontTunnel } from "lucide-react";
-import { motion } from "framer-motion";
 import { useRef } from "react";
 // import { addAreaParticles } from "./AnimatedBackground";
 
@@ -77,7 +77,7 @@ export function Sidebar() {
             </motion.div>
             {/* TODO: Make this section mobile friendly */}
             <motion.div
-              className="hidden flex-col-reverse items-center py-1 text-sm md:flex-row"
+              className="hidden flex-col-reverse items-center py-1 text-sm md:block"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               // onClick={() => handleAddParticles(highlightsRef, 10)}
