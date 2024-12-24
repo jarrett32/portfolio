@@ -51,7 +51,7 @@ export default function Page() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <div>© {new Date().getFullYear()} Jarrett Thompson.</div>
+        <div>{new Date().getFullYear()}</div>
         {/* TODO: Make copy and paste */}
         <div className="flex space-x-2">
           <Link
