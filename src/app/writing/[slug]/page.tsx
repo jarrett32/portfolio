@@ -47,7 +47,11 @@ export default async function BlogPost(props: { params: PostProps }) {
     <div className="mx-auto max-w-6xl px-4 py-8">
       <PostHeader post={post} />
       <div className="mt-8 flex flex-col gap-8 lg:flex-row">
-        <main className="lg:w-3/4">
+        <main
+          className={
+            post.meta.show_table_of_contents ? "lg:w-3/4" : "lg:w-full"
+          }
+        >
           <article className="prose dark:prose-invert max-w-none">
             <MDXRemote
               source={post.content}
@@ -64,11 +68,13 @@ export default async function BlogPost(props: { params: PostProps }) {
             />
           </article>
         </main>
-        <aside className="lg:w-1/4">
-          <div className="sticky top-8">
-            <TableOfContents content={post.content} />
-          </div>
-        </aside>
+        {post.meta.show_table_of_contents && (
+          <aside className="lg:w-1/4">
+            <div className="sticky top-8">
+              <TableOfContents content={post.content} />
+            </div>
+          </aside>
+        )}
       </div>
     </div>
   );

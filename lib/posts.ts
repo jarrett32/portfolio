@@ -13,6 +13,7 @@ export const PostMetaSchema = z.object({
   image_alt: z.string().optional(),
   github: z.string().optional(),
   link: z.string().optional(),
+  show_table_of_contents: z.boolean().optional().default(true),
 });
 export type PostMeta = z.infer<typeof PostMetaSchema>;
 
