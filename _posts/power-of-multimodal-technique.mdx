@@ -1,0 +1,66 @@
+---
+title: Project Teddy - YOLO + LSTM To Predict My Brother's Dog's Behavior
+description: In this project I experiment with unique techniques to predict my brothers dog's behavior and try to maximize inference time on my cpu.
+date: 12-29-2024
+updated_at: 12-29-2024
+show_table_of_contents: true
+pinned: true
+---
+
+## Introduction
+- this is to prototype an accurate prediction model using lightweight techniques.
+- Yolo is very fast
+- By using feature extraction and other inputs such as audio, sequential data, and more, we can improve the accuracy of the model.
+- This is good for maximizing fps or minimizing compute.
+- I haven't found too many projects that exist similar to this
+- Here's the creator of yolo talking about it https://github.com/ultralytics/ultralytics/issues/8496
+
+
+[video preview]
+
+### Use Cases
+You may find this interesting if you are using:
+- Drones, edge devices, and other devices with limited compute.
+- Applications that need to handle many input streams.
+- Optimize latency by running some local models
+- Run into any challenges below in your applications.
+
+### Some Common Approaches
+
+Lightweight:
+**YOLO** is a popular object detection model that is used to detect objects in images. It is known for being extremely fast while maintaining high accuracy.
+**SSD** is a similar model to YOLO, one of its competitors.
+**CNN** classify images to a single label. They are also pretty fast and used for behavior classification.
+
+Heavyweight:
+**DETR** is a transformer based model that is used to detect objects in images. Transformers do ???
+**ViT** is a transformer based model to classify images to a single label.
+
+**These heavier models are very accurate, at the cost of more compute and inference time. There is an intense wave of research dedicated to making these models faster while maintaining accuracy. It feels like a new paper every week its impossible to keep up**
+
+## The Vision 
+
+[Flow Diagram](./other/multimodal-flow-diagram.png)
+
+I decided to use YOLO to extract visual features, and LSTM for sequential data and predicting the probabilities of the next state of the dog.
+Classes:
+- teddy (dogs normal state)
+- teddy_lying (dog is lying down)
+- teddy_playing (dog is playing with one of the toys)
+- teddy_howling (dog is howling)
+- toy
+- water bowl
+- food bowl
+
+Using these boxes I fed in x,y,w,h,dx,dy from the previous frame into the LSTM and got !goodenough accuracy.
+
+### Challenges
+- Not enough howling data: Audio data would definetely help with this class
+- Cameras are shaking or the boxes are moving: annotate a still image in the background. Did better on the camera angle with the water bowl in the background.
+
+
+## Future Improvements
+- Audio - I think audio is a significant feature for detecting low !sample of classes such as teddy_howling. It would also improve the accuracy of other classes.
+- !Tiny model suite - I could greatly improve performance by using a tiny YOLO.
+- Hardware - It would be interesting to see differences in inference speeds on a gpu such as a Jetson.
+- !splitting models - one with x classes and one with y classes.
