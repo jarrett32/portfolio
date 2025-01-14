@@ -8,6 +8,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { getPostBySlug } from "lib/posts";
 import { PostHeader, TableOfContents } from "./TableOfContents";
 import Image, { type ImageProps } from "next/image";
+import { YouTubeEmbed } from "@next/third-parties/google";
 
 export async function generateStaticParams() {
   const postsDirectory = path.join(process.cwd(), "_posts");
@@ -37,10 +38,14 @@ export default async function BlogPost(props: { params: PostProps }) {
     return <Image alt={alt} {...otherProps} />;
   }
 
+  function YouTubeVideo(props: { videoid: string }) {
+    return <YouTubeEmbed videoid={props.videoid} />;
+  }
+
   const components = {
     a: CustomLink,
     Image: nextImage,
-    //   ImageSlider: ImageSlider,
+    YouTubeVideo: YouTubeVideo,
   };
 
   return (

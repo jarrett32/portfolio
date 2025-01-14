@@ -1,6 +1,6 @@
 ---
 title: Project Teddy - YOLO + LSTM To Predict My Brother's Dog's Behavior
-description: In this project I experiment with unique techniques to predict my brothers dog's behavior and try to maximize inference time on my cpu.
+description: A Hybrid approach to predicting my brothers dog's behavior.
 date: 12-29-2024
 updated_at: 12-29-2024
 show_table_of_contents: true
@@ -8,59 +8,132 @@ pinned: true
 ---
 
 ## Introduction
-- this is to prototype an accurate prediction model using lightweight techniques.
-- Yolo is very fast
-- By using feature extraction and other inputs such as audio, sequential data, and more, we can improve the accuracy of the model.
-- This is good for maximizing fps or minimizing compute.
-- I haven't found too many projects that exist similar to this
-- Here's the creator of yolo talking about it https://github.com/ultralytics/ultralytics/issues/8496
 
+Creating an accurate prediction model doesn't always require heavy, resource-intensive techniques. This project is a prototype that leverages lightweight methods to achieve this goal. To achieve this, this prototype uses object detection [YOLO](https://github.com/ultralytics/ultralytics) and sequential model [LSTM](https://github.com/keras-team/keras/) to use sequential data to make predictions.
 
-[video preview]
+One of my primary objectives was to experiment with techniques to minimize inference time on my CPU. For instance, when observing Teddy lying down, I decided to skip inferencing every two frames since his state was unlikely to change rapidly. Other methods can include [conditional computing](https://intellabs.github.io/distiller/conditional_computation.html), [pruning](https://intellabs.github.io/distiller/pruning.html), [Quantization](https://intellabs.github.io/distiller/quantization.html), and more. I would love to add these in the future.
+
+I haven't come across many projects similar to this one, but I did find In fact, the founder of Ultralytics recently complimented this approach in [this discussion](https://github.com/ultralytics/ultralytics/issues/8496), highlighting its potential.
+
+<YouTubeVideo videoid="gNqRSZjK1wQ"/>
 
 ### Use Cases
-You may find this interesting if you are using:
-- Drones, edge devices, and other devices with limited compute.
-- Applications that need to handle many input streams.
-- Optimize latency by running some local models
-- Run into any challenges below in your applications.
+
+You might find this project particularly interesting if you are working with:
+
+- **Drones, edge devices, and other devices with limited compute**: These platforms benefit greatly from lightweight models that don't demand excessive computational resources.
+- **Applications that need to handle multiple input streams**: Reducing inference time is key if you need a real time application consuming multiple input streams.
+- **Optimizing latency by small local models**: Reducing latency is crucial for real-time applications, and local models can help achieve that.
 
 ### Some Common Approaches
 
-Lightweight:
-**YOLO** is a popular object detection model that is used to detect objects in images. It is known for being extremely fast while maintaining high accuracy.
-**SSD** is a similar model to YOLO, one of its competitors.
-**CNN** classify images to a single label. They are also pretty fast and used for behavior classification.
+When it comes to object detection and image classification, models generally fall into two categories: *Lightweight* and **Heavyweight**.
 
-Heavyweight:
-**DETR** is a transformer based model that is used to detect objects in images. Transformers do ???
-**ViT** is a transformer based model to classify images to a single label.
+#### Lightweight Models
 
-**These heavier models are very accurate, at the cost of more compute and inference time. There is an intense wave of research dedicated to making these models faster while maintaining accuracy. It feels like a new paper every week its impossible to keep up**
+**YOLO** is a standout in this category, offering extremely fast object detection while maintaining high accuracy. It's widely used in real-time applications where speed is paramount.
 
-## The Vision 
+**SSD** is another popular model similar to YOLO. It's one of YOLO's main competitors and is known for its balance between speed and accuracy.
 
-[Flow Diagram](./other/multimodal-flow-diagram.png)
+**CNNs** classify images into single labels efficiently.
 
-I decided to use YOLO to extract visual features, and LSTM for sequential data and predicting the probabilities of the next state of the dog.
-Classes:
-- teddy (dogs normal state)
-- teddy_lying (dog is lying down)
-- teddy_playing (dog is playing with one of the toys)
-- teddy_howling (dog is howling)
-- toy
-- water bowl
-- food bowl
+#### Heavyweight Models
 
-Using these boxes I fed in x,y,w,h,dx,dy from the previous frame into the LSTM and got !goodenough accuracy.
+On the other end of the spectrum, **DETR**is a transformer-based model used for object detection. Transformers excel at capturing long-range dependencies in data, which can enhance detection accuracy but at the cost of increased computational resources.
+
+**ViT** is another transformer-based model designed for image classification. Like DETR, it offers high accuracy but requires more compute power and longer inference times.
+
+These heavier models are highly accurate, but they demand more computational resources and longer inference times. There's a continuous wave of research aimed at making these models faster without sacrificing accuracy. It feels like there's a new paper every week!
+
+Here is a cool multimodal [project](https://www.mdpi.com/2079-9292/10/9/1035) that showcases YOLO detecting signs from sign language and using an LSTM to predict the corresponding words. Quite similar to this one.
+
+## The Vision
+
+<Image
+  alt={`Flow Diagram`}
+  src={`/other/multimodal-flow-diagram.png`}
+  width={600}
+  height={350}
+/>
+
+In this project, I decided to combine the strengths of YOLO for visual feature extraction with LSTM networks for handling sequential data. This combination allows the model to predict the probabilities of the next state of my brother's dog, Teddy.
+
+### Classes
+
+The model identifies the following classes:
+
+- **teddy**: Teddy's normal state.
+- **teddy_lying**: Teddy is lying down.
+- **teddy_playing**: Teddy is playing with one of his toys.
+- **teddy_howling**: Teddy is howling.
+- **toy**
+- **water bowl**
+- **food bowl**
+
+By extracting the bounding box coordinates (x, y, w, h) and their respective changes (dx, dy) from the previous frame, I feed this data into the LSTM. This setup has achieved satisfactory accuracy.
+
+**Input to the LSTM:**
+
+| frame_idx | teddy_state | teddy_confidence | teddy_x | teddy_y | teddy_w | teddy_h | teddy_dx | teddy_dy | closest_toy_confidence | closest_toy_x | closest_toy_y | closest_toy_w | closest_toy_h | closest_toy_dx | closest_toy_dy | water_confidence | water_x | water_y | water_w | water_h |
+|-----------|-------------|-------------------|---------|---------|---------|---------|----------|----------|------------------------|---------------|---------------|---------------|---------------|----------------|----------------|------------------|---------|---------|---------|---------|
+```python
+{
+'frame_idx': int,
+'teddy_state': str,
+'teddy_confidence': float,
+'teddy_x': float,
+'teddy_y': float,
+'teddy_w': float,
+'teddy_h': float,
+'teddy_dx': float,
+'teddy_dy': float,
+'closest_toy_confidence': float,
+'closest_toy_x': float,
+'closest_toy_y': float,
+'closest_toy_w': float,
+'closest_toy_h': float,
+'closest_toy_dx': float,
+'closest_toy_dy': float,
+'water_confidence': float,
+'water_x': float,
+'water_y': float,
+'water_w': float,
+'water_h': float
+}
+```
+
+**Output looks something like:**
+
+```python
+{
+'frame_idx': int,
+'current_state': str,
+'predicted_states': state1: float, state2: float...
+'predicted_next_state': str
+}
+```
 
 ### Challenges
-- Not enough howling data: Audio data would definetely help with this class
-- Cameras are shaking or the boxes are moving: annotate a still image in the background. Did better on the camera angle with the water bowl in the background.
 
+Throughout this project, I encountered several challenges:
+
+- **Underfitted Classes**: Classes like `teddy_howling` had insufficient data.
+- **Camera Stability**: Shaky cameras or moving backgrounds caused inaccuracies.
+- **Multiple States**: Teddy sometimes exhibited behaviors that fit into two states simultaneously, complicating the classification by object detection. It was hard to even label it in the training data.
+
+### Tips & Tricks
+
+Here are some insights and strategies that helped overcome the challenges:
+
+- **Still Background Class**: Initially, I considered adding a fifth state, such as `teddy_drinking` or `teddy_eating`. However, I realized there wasn't enough data for these classes. Instead, maintaining a still object still proved beneficial for the LSTM, as any movement would indicate camera shake, reducing the weight of the `dx` and `dy` parameters.
+- **Skipping Inference**: By identifying when Teddy was in a "steady state" like `teddy_lying`, I chose to skip inferencing, which optimized performance.
+- **Prioritizing States**: Assigning priorities to Teddy's states—`teddy_howling` > `teddy_playing` > `teddy_lying` > `teddy` (normal) assisted in addressing underfitting and resolving instances where Teddy was in multiple states simultaneously.
+- **(TODO) Audio**: I envisioned adding audio inputs to help detect states like `teddy_howling` and `teddy_playing`. While this would have made the project truly multimodal, the lack of audio in the training data would be a huge lift.
 
 ## Future Improvements
-- Audio - I think audio is a significant feature for detecting low !sample of classes such as teddy_howling. It would also improve the accuracy of other classes.
-- !Tiny model suite - I could greatly improve performance by using a tiny YOLO.
-- Hardware - It would be interesting to see differences in inference speeds on a gpu such as a Jetson.
-- !splitting models - one with x classes and one with y classes.
+
+Looking ahead, there are several enhancements I'd like to explore:
+
+- **Audio**: Would help increase the accuracy of the model. It would also be fun to experiment with. For example I can use conditional computing to see if i get better performance.
+- **Tiny Model Suite**: I'm interested to see how much better performance I can get by using a tiny YOLO model and how accurate it is.
+- **Hardware Optimization**: Interested in seeing difference in inference speeds on a gpu versus a cpu. They handle different types of tasks differently.
