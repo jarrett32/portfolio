@@ -15,8 +15,10 @@ export default function Bio() {
           href={
             "https://github.com/jarrett32/portfolio/tree/main/public/diving"
           }
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          here
+          [Folder Link]
         </Link>
       </p>
     </>
