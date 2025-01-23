@@ -61,7 +61,7 @@ export default function Page() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <Link href="tools-i-used-in-2024">
+                <Link href="writing/tools-i-used-in-2024">
                   <div className="rounded-lg border border-gray-200 p-4 transition-all hover:border-gray-300 dark:border-gray-800 dark:hover:border-gray-700">
                     <p className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
                       Tools I used in 2024
