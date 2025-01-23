@@ -35,11 +35,47 @@ export default function Page() {
                   here
                 </Link>
               </p>
-              <p>
-                Looking for friends to do advent of code 2024{" "}
-                <Link href="/writing/advent-of-code-2024">here</Link>
-              </p>
             </motion.div>
+            <div className="p-8"></div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <motion.div
+                className=""
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <Link
+                  href="writing/power-of-multimodal-technique"
+                  className="block"
+                >
+                  <div className="rounded-lg border border-gray-200 p-4 transition-all hover:border-gray-300 dark:border-gray-800 dark:hover:border-gray-700">
+                    <p className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                      Latest Project
+                    </p>
+                    <time className="text-sm text-gray-500 dark:text-gray-500">
+                      December 29, 2024
+                    </time>
+                  </div>
+                </Link>
+              </motion.div>
+              <motion.div
+                className=""
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <Link href="tools-i-used-in-2024">
+                  <div className="rounded-lg border border-gray-200 p-4 transition-all hover:border-gray-300 dark:border-gray-800 dark:hover:border-gray-700">
+                    <p className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                      Tools I used in 2024
+                    </p>
+                    <time className="text-sm text-gray-500 dark:text-gray-500">
+                      December 25, 2024
+                    </time>
+                  </div>
+                </Link>
+              </motion.div>
+            </div>
             {/* <motion.div
               className="mt-12"
               initial={{ opacity: 0, y: 20 }}
