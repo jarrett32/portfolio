@@ -26,23 +26,38 @@ export function TableOfContents({ content }: { content: string }) {
   }, [content]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "0px 0px -80% 0px" },
-    );
+    if (!toc || toc.length === 0) return;
 
-    toc.forEach((item) => {
-      const element = document.getElementById(item.id);
-      if (element) observer.observe(element);
-    });
+    const headingElements = toc
+      .map((item) => document.getElementById(item.id))
+      .filter(Boolean) as HTMLElement[];
 
-    return () => observer.disconnect();
+    const callback = (entries: IntersectionObserverEntry[]) => {
+      let active: string | null = null;
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          active = entry.target.id;
+        }
+      });
+      if (active) {
+        setActiveId(active);
+      }
+    };
+
+    const options = {
+      root: null,
+      rootMargin: "-100px 0px -40% 0px",
+      threshold: [0, 0.25, 0.5, 0.75, 1],
+    };
+
+    const observer = new IntersectionObserver(callback, options);
+
+    headingElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      headingElements.forEach((el) => observer.unobserve(el));
+      observer.disconnect();
+    };
   }, [toc]);
 
   if (!toc || toc.length === 0) return null;
