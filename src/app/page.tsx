@@ -1,10 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 
 const Footer = dynamic(() => import("./Footer"), {
+  loading: () => <div className="h-[100px]" />,
+});
+
+const MotionDiv = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion.div),
+  { ssr: false },
+);
+
+const Bio = dynamic(() => import("./Bio"), {
   loading: () => <div className="h-[100px]" />,
 });
 
@@ -17,33 +25,17 @@ export default function Page() {
       <div className="flex-auto">
         <div className="flex flex-1 items-start space-x-4">
           <div className="w-full md:w-9/12">
-            <motion.div
+            <MotionDiv
               className="prose dark:prose-dark md:prose-base prose-lg prose-h1:text-[17px] prose-h2:text-[17px] prose-h3:text-[17px] md:prose-h1:text-[15px] md:prose-h2:text-[15px] md:prose-h3:text-[15px] prose-p:font-serif prose-ul:font-serif prose-ol:font-serif prose-a:text-primary-600 prose-code:text-pink-500 prose-a:underline-offset-2 dark:prose-p:text-gray-300 dark:prose-a:text-secondary-400 dark:prose-code:text-pink-500 dark:prose-headings:text-white dark:prose-invert prose-pre:bg-[#fafafa] dark:prose-pre:bg-[#0E121A] prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-800"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <p>
-                I&apos;m a software engineer living in San Diego, US. I
-                specialize in full stack apps and use React, Tailwind, Prisma,
-                and more
-              </p>{" "}
-              <br></br>
-              <p>
-                I also enjoy baseball, diving, or anything to do with the ocean.
-                You can see some some my finds{" "}
-                <Link
-                  href={
-                    "https://github.com/jarrett32/portfolio/tree/main/public/diving"
-                  }
-                >
-                  here
-                </Link>
-              </p>
-            </motion.div>
+              <Bio />
+            </MotionDiv>
             <div className="p-8"></div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <motion.div
+              <MotionDiv
                 className=""
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -62,8 +54,8 @@ export default function Page() {
                     </time>
                   </div>
                 </Link>
-              </motion.div>
-              <motion.div
+              </MotionDiv>
+              <MotionDiv
                 className=""
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -79,7 +71,7 @@ export default function Page() {
                     </time>
                   </div>
                 </Link>
-              </motion.div>
+              </MotionDiv>
             </div>
           </div>
         </div>

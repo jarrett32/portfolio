@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-sync-scripts */
 import "~/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
@@ -18,8 +19,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="en" className={GeistSans.variable} suppressHydrationWarning>
       <head>
+        {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script> */}
         <meta
           name="google-site-verification"
           content="MtAyVRQTEK_fUKxCzonYRLNclF8eKY7W4BDyb7rK35Y"
@@ -27,6 +29,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${inter.className} min-h-screen text-gray-800 antialiased dark:text-white`}
+        suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"

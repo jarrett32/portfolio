@@ -7,7 +7,6 @@ import "./src/env.js";
 /** @type {import("next").NextConfig} */
 const config = {
   transpilePackages: ["next-mdx-remote"],
-  swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
