@@ -8,7 +8,7 @@ import { Sidebar } from "./Sidebar";
 
 export const metadata: Metadata = {
   title: "Portfolio - Jathompson.dev",
-  description: "",
+  description: "Jarrett Thompson's portfolio",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
@@ -34,7 +34,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* <AnimatedBackground /> */}
           <div className="relative z-10 mx-4 mb-40 mt-8 flex max-w-5xl flex-col md:mt-20 md:flex-row lg:mx-auto lg:mt-32">
             <Sidebar />
             {children}
