@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-
+import Image from "next/image";
 const Footer = dynamic(() => import("./Footer"), {
   loading: () => <div className="h-[100px]" />,
 });
@@ -33,6 +33,15 @@ export default function Page() {
             >
               <Bio />
             </MotionDiv>
+            <div className="p-8"></div>
+            <Image
+              src="/fishing.webp"
+              alt="Fishing"
+              width={720}
+              height={360}
+              quality={100}
+              className="rounded-lg"
+            />
             <div className="p-8"></div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <MotionDiv
